@@ -1,12 +1,6 @@
 package java7onlineHWs.hw8;
 
 public class Main {
-
-    // В первом методе мы используем метод StringBuilder.reverse() для эффективного реверсирования строки Java.
-    // Во втором методе мы ищем подстроку в строке и заменяем ее на реверсированную подстроку. В третьем методе
-    // мы используем метод StringBuilder.replace() для замены подстроки на реверсированную подстроку в указанном
-    // диапазоне.
-
     public static void main(String[] args) {
 
         String stc = "Hello World";
