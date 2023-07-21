@@ -20,21 +20,21 @@ public class FileManager {
     public void listOfFiles(boolean withSize) {
         File currentFolderAsFile = new File(currentFolder);
 
-        File files[] = currentFolderAsFile.listFiles(); //Получить все файлы в папке.
+        File files[] = currentFolderAsFile.listFiles(); // Получить все файлы в папке.
         for (File file : files) {
             if (file.isDirectory()) {
 
-                if (withSize) { //Файлы и папки.
-                    System.out.print(file.getName() + "\\ " + FileUtils.sizeOf(file) + " bite");
+                if (withSize) { // Папки.
+                    System.out.print(file.getName() + "\\ " + FileUtils.sizeOf(file) + " - bite");
                 } else {
                     System.out.print(file.getName() + "\\ ");
                 }
             } else {
-                if (withSize) { //Только файлы.
-                    //С размером.
-                    System.out.print(file.getName() + " - " + file.length() + " bite");
+                if (withSize) { // Файлы.
+                    // С размером.
+                    System.out.print(file.getName() + " " + file.length() + " - bite");
                 } else {
-                    //Без.
+                    // Без.
                     System.out.print(file.getName());
                 }
             }
@@ -63,7 +63,6 @@ public class FileManager {
         } catch (IOException e) {
             System.err.println("Ошибка в методе createFile");
         }
-
 
     }
 
@@ -99,4 +98,47 @@ public class FileManager {
         }
 
     }
+
+    public void removeFile(String fileName){
+
+        File file = new File(currentFolder + "\\" + fileName);
+
+        if(file.delete()){
+            System.out.println(file.getName() + " Файл удален");
+        }else {
+            System.out.println("Не удалось удалить файл");
+        }
+
+    }
+
+    public void searchFile(String fileName) {
+
+        File dir = new File(currentFolder + "\\");
+        File[] files = dir.listFiles();
+        if(files != null)
+        {
+            for(File file : files)
+            {
+                if(file.isFile() && file.getName().equals(fileName)) {
+                    System.out.println("Файл " + fileName + " найден.");
+                    break;
+                }
+            }
+        }
+
+    }
+
+    public void createFolder(String folderName) {
+
+        File file = new File(currentFolder + "\\" + folderName);
+        if (!file.exists()) {
+            if (file.mkdir()) {
+                System.out.println("Папка зоздана :)");
+            } else {
+                System.out.println("Не удалось создать папку :(");
+            }
+        }
+    }
+
 }
+
