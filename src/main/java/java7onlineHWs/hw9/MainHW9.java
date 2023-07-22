@@ -11,6 +11,7 @@ public class MainHW9 {
 
         //Не забудь это вывести на экран при запросе!
         String path = "D:\\Java_7_Hws\\Java7HWs\\root";
+        File folder = new File(path);
         FileManager fileManager = new FileManager(path);
 
         File file = new File(path);
@@ -55,6 +56,10 @@ public class MainHW9 {
                 case Commands.CREATE_FOLDER -> {
                     String folderName = tokens[1];
                     fileManager.createFolder(folderName);
+                }
+                case Commands.SEARCH_TEXT -> {
+                    String textName = tokens[1];
+                    fileManager.searchText(folder, textName);
                 }
 
             }

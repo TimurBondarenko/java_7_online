@@ -2,10 +2,8 @@ package java7onlineHWs.hw9;
 
 import org.apache.commons.io.FileUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.Scanner;
 
 public class FileManager {
 
@@ -99,13 +97,13 @@ public class FileManager {
 
     }
 
-    public void removeFile(String fileName){
+    public void removeFile(String fileName) {
 
         File file = new File(currentFolder + "\\" + fileName);
 
-        if(file.delete()){
+        if (file.delete()) {
             System.out.println(file.getName() + " Файл удален");
-        }else {
+        } else {
             System.out.println("Не удалось удалить файл");
         }
 
@@ -115,11 +113,10 @@ public class FileManager {
 
         File dir = new File(currentFolder + "\\");
         File[] files = dir.listFiles();
-        if(files != null)
-        {
-            for(File file : files)
-            {
-                if(file.isFile() && file.getName().equals(fileName)) {
+
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile() && file.getName().equals(fileName)) {
                     System.out.println("Файл " + fileName + " найден.");
                     break;
                 }
@@ -138,6 +135,33 @@ public class FileManager {
                 System.out.println("Не удалось создать папку :(");
             }
         }
+    }
+
+    public void searchText(File folder, String keyword) {
+        // Получите список файлов в папке
+        File[] files = folder.listFiles();
+
+        // Обойдите все файлы в папке
+        for (File file : files) {
+            if (file.isDirectory()) {
+                // Если это папка, выполните поиск рекурсивно
+                searchText(file, keyword);
+            } else {
+                // Если это файл, проверьте его содержимое
+                try (Scanner scanner = new Scanner(file)) {
+                    while (scanner.hasNextLine()) {
+                        String line = scanner.nextLine();
+                        if (line.contains(keyword)) {
+                            System.out.println(file.getAbsolutePath());
+
+                        }
+                    }
+                } catch (FileNotFoundException e) {
+                    System.out.println("Файл не был найден. Метод searchText");
+                }
+            }
+        }
+
     }
 
 }
