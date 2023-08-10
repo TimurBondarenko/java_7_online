@@ -1,7 +1,8 @@
-package java7onlineHWs.hw9;
+package java7onlineHWs.hw9.service;
 
 import org.apache.commons.io.FileUtils;
 
+import javax.imageio.IIOException;
 import java.io.*;
 import java.util.Scanner;
 
@@ -16,28 +17,34 @@ public class FileManager {
     }
 
     public void listOfFiles(boolean withSize) {
+
         File currentFolderAsFile = new File(currentFolder);
+        try {
+            File files[] = currentFolderAsFile.listFiles(); // Получить все файлы в папке.
+            for (File file : files) {
+                if (file.isDirectory()) {
 
-        File files[] = currentFolderAsFile.listFiles(); // Получить все файлы в папке.
-        for (File file : files) {
-            if (file.isDirectory()) {
-
-                if (withSize) { // Папки.
-                    System.out.print(file.getName() + "\\ " + FileUtils.sizeOf(file) + " - bite");
+                    if (withSize) { // Папки.
+                        System.out.print(file.getName() + "\\ " + FileUtils.sizeOf(file) + " - bite");
+                    } else {
+                        System.out.print(file.getName() + "\\ ");
+                    }
                 } else {
-                    System.out.print(file.getName() + "\\ ");
+                    if (withSize) { // Файлы.
+                        // С размером.
+                        System.out.print(file.getName() + " " + file.length() + " - bite");
+                    } else {
+                        // Без.
+                        System.out.print(file.getName());
+                    }
                 }
-            } else {
-                if (withSize) { // Файлы.
-                    // С размером.
-                    System.out.print(file.getName() + " " + file.length() + " - bite");
-                } else {
-                    // Без.
-                    System.out.print(file.getName());
-                }
+                System.out.println();
             }
-            System.out.println();
+        } catch (NullPointerException e) {
+            System.out.print("Ошибка: Не верно указан путь... ");
+            throw new RuntimeException(e);
         }
+
     }
 
     public void copyFile(String sourceFileName, String destFileName) {
@@ -47,8 +54,10 @@ public class FileManager {
         File dest = new File(currentFolder + "\\" + destFileName);
         try {
             FileUtils.copyFile(source, dest);
-        } catch (IOException e) {
-            System.err.println("Произошла ошибка в методе copyFile");
+        } catch (NullPointerException | IOException e) {
+            System.out.println("Ошибка: Не верно указан путь... ");
+            System.out.println("Или ошибка в чем-то другом");
+            throw new RuntimeException("Произошла ошибка в методе copyFile" + e);
         }
 
     }
@@ -57,9 +66,14 @@ public class FileManager {
 
         File file = new File(currentFolder + "\\" + fileName);
         try {
-            file.createNewFile();
-        } catch (IOException e) {
-            System.err.println("Ошибка в методе createFile");
+
+            if (file.createNewFile())
+                System.out.println("Файл создан");
+
+        } catch (IOException | NullPointerException e) {
+            System.out.println("Ошибка: Не верно указан путь... ");
+            System.out.println("Или ошибка в чем-то другом");
+            throw new RuntimeException(e);
         }
 
     }
@@ -67,7 +81,6 @@ public class FileManager {
     public void fileContent(String fileName) {
 
         File file = new File(currentFolder + "\\" + fileName);
-
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file)); //Позволит прочитать содиржимое файла.
             String line = reader.readLine();
@@ -75,8 +88,10 @@ public class FileManager {
                 System.out.println(line);
                 line = reader.readLine();
             }
-        } catch (IOException e) {
-            System.out.println("Ошибка в методе fileContent");
+        } catch (IOException | NullPointerException e) {
+            System.out.println("Ошибка: Не верно указан путь... ");
+            System.out.println("Или ошибка в чем-то другом");
+            throw new RuntimeException(e);
         }
 
     }
@@ -100,41 +115,57 @@ public class FileManager {
     public void removeFile(String fileName) {
 
         File file = new File(currentFolder + "\\" + fileName);
-
-        if (file.delete()) {
-            System.out.println(file.getName() + " Файл удален");
-        } else {
-            System.out.println("Не удалось удалить файл");
+        try {
+            if (file.delete())
+                System.out.println(file.getName() + " Файл удален");
+        } catch (NullPointerException e) {
+            System.out.print("Ошибка: Не верно указан путь... ");
+            throw new RuntimeException(e);
         }
 
     }
 
-    public void searchFile(String fileName) {
+    public void searchFile(String fileName) { // -> Problems
 
         File dir = new File(currentFolder + "\\");
         File[] files = dir.listFiles();
+        boolean fileFound = false;
 
-        if (files != null) {
-            for (File file : files) {
-                if (file.isFile() && file.getName().equals(fileName)) {
-                    System.out.println("Файл " + fileName + " найден.");
-                    break;
+        try {
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isFile() && file.getName().equals(fileName)) {
+                        System.out.println("Файл " + fileName + " найден.");
+                        fileFound = true;
+                        break;
+                    }
                 }
-            }
-        }
 
+            }
+
+            if (!fileFound) {
+                System.out.println("Файл " + fileName + " не найден.");
+            }
+
+        }catch (NullPointerException e){
+            System.out.print("Ошибка: Не верно указан путь... ");
+            throw new RuntimeException(e);
+        }
     }
 
     public void createFolder(String folderName) {
 
         File file = new File(currentFolder + "\\" + folderName);
-        if (!file.exists()) {
-            if (file.mkdir()) {
-                System.out.println("Папка зоздана :)");
-            } else {
-                System.out.println("Не удалось создать папку :(");
+        try{
+            if (!file.exists()) {
+                if (file.mkdir())
+                    System.out.println("Папка создана :)");
             }
+        }catch (NullPointerException e){
+            System.out.print("Ошибка: Не верно указан путь... ");
+            throw new RuntimeException(e);
         }
+
     }
 
     public void searchText(File folder, String keyword) {
@@ -157,11 +188,10 @@ public class FileManager {
                         }
                     }
                 } catch (FileNotFoundException e) {
-                    System.out.println("Файл не был найден. Метод searchText");
+                    System.out.println("Файл не был найден. Ошибка в методе searchText");
                 }
             }
         }
-
     }
 
 }
