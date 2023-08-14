@@ -1,6 +1,6 @@
-package java7onlineHWs.hw9.controller;
+package ua.com.alevel.controller;
 
-import java7onlineHWs.hw9.service.FileManager;
+import ua.com.alevel.service.FileManager;
 
 import java.io.File;
 import java.util.Scanner;
@@ -8,7 +8,6 @@ import java.util.Scanner;
 public class FileController {
 
     public void crud(String path) {
-
         FileManager fileManager = new FileManager(path);
         File folder = new File(path);
 

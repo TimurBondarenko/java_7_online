@@ -1,8 +1,7 @@
-package java7onlineHWs.hw9.service;
+package ua.com.alevel.service;
 
 import org.apache.commons.io.FileUtils;
 
-import javax.imageio.IIOException;
 import java.io.*;
 import java.util.Scanner;
 
@@ -193,6 +192,4 @@ public class FileManager {
             }
         }
     }
-
 }
-
