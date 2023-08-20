@@ -1,6 +1,6 @@
 package java7onlineHWs.hw9.controller;
 
-import java7onlineHWs.hw9.service.FileManager;
+import java7onlineHWs.hw9.dao.FileManager;
 
 import java.io.File;
 import java.util.Scanner;
@@ -90,3 +90,5 @@ public class FileController {
 
     }
 }
+
+
