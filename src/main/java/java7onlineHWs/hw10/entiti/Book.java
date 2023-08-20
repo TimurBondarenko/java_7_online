@@ -1,7 +1,5 @@
 package java7onlineHWs.hw10.entiti;
 
-import java7onlineHWs.hw10.entiti.Author;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
